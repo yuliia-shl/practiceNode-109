@@ -1,4 +1,8 @@
-import { getAllProducts, getProductById } from '../services/products.js';
+import {
+  addProduct,
+  getAllProducts,
+  getProductById,
+} from '../services/products.js';
 
 export const getAllProductsControler = async (req, res) => {
   const response = await getAllProducts();
@@ -23,5 +27,14 @@ export const getProductByIdController = async (req, res, _next) => {
     status: 200,
     message: 'Successfully found products!',
     data: response,
+  });
+};
+
+export const addProductController = async (req, res) => {
+  const product = await addProduct(req.body);
+  res.status(201).json({
+    status: 201,
+    message: `Successfully created a product!`,
+    data: product,
   });
 };
