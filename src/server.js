@@ -4,6 +4,8 @@ import cors from 'cors';
 import { env } from './utils/env.js';
 
 import productsRouter from './routers/products.js';
+import { notFoundHandler } from './middlewares/notFoundHandler.js';
+import { errorHandler } from './middlewares/errorHandler.js';
 const PORT = Number(env('PORT', '3000'));
 
 export const setupServer = () => {
@@ -13,17 +15,8 @@ export const setupServer = () => {
   app.use(cors());
   app.use(productsRouter);
 
-  app.use('*', (req, res) => {
-    res.status(404).json({
-      message: 'Route not found',
-    });
-  });
-  app.use((err, req, res, _next) => {
-    res.status(500).json({
-      message: 'Something went wrong',
-      data: err.message,
-    });
-  });
+  app.use('*', notFoundHandler);
+  app.use(errorHandler);
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
