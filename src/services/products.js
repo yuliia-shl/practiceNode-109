@@ -16,3 +16,8 @@ export const updateProduct = async (productId, body) => {
     new: true,
   });
 };
+
+export const deleteProduct = async(productId) => {
+  const product = await ProductModel.findOneAndDelete({_id:productId});
+  return product;
+};
