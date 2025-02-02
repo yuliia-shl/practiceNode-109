@@ -8,12 +8,35 @@ import {
 
 import { Router } from 'express';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
+import { validateBody } from '../middlewares/validateBody.js';
+import {
+  createProductSchema,
+  patchProductSchema,
+} from '../validation/product.js';
+import { isValidId } from '../middlewares/isValidid.js';
 
 const router = Router();
 
 router.get('/products', ctrlWrapper(getAllProductsControler));
-router.get('/products/:productId', ctrlWrapper(getProductByIdController));
-router.post('/products', ctrlWrapper(addProductController));
-router.patch('/products/:productId', ctrlWrapper(updateProductController));
-router.delete('/products/:productId', ctrlWrapper(deleteProductController));
+router.get(
+  '/products/:productId',
+  isValidId,
+  ctrlWrapper(getProductByIdController),
+);
+router.post(
+  '/products',
+  validateBody(createProductSchema),
+  ctrlWrapper(addProductController),
+);
+router.patch(
+  '/products/:productId',
+  isValidId,
+  validateBody(patchProductSchema),
+  ctrlWrapper(updateProductController),
+);
+router.delete(
+  '/products/:productId',
+  isValidId,
+  ctrlWrapper(deleteProductController),
+);
 export default router;
