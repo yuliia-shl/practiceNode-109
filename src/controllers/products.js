@@ -6,9 +6,13 @@ import {
   updateProduct,
   deleteProduct,
 } from '../services/products.js';
+import { parseSortParams } from '../utils/parseSortParams.js';
 
 export const getAllProductsControler = async (req, res) => {
-  const response = await getAllProducts();
+  console.log(req.query);
+  const { sortOrder, sortBy } = parseSortParams(req.query);
+
+  const response = await getAllProducts({ sortOrder, sortBy });
   res.json({
     status: 200,
     message: 'Successfully found products!',
@@ -55,10 +59,10 @@ export const updateProductController = async (req, res) => {
 };
 
 export const deleteProductController = async (req, res) => {
-  const {productId} = req.params;
+  const { productId } = req.params;
   const product = await deleteProduct(productId);
   if (!product) {
-    throw createHttpError (404, 'Product not Found');
+    throw createHttpError(404, 'Product not Found');
   }
   res.status(204).send();
 };

@@ -1,7 +1,11 @@
+import { SORT_ORDER } from '../constants/index.js';
 import { ProductModel } from '../db/models/Product.js';
 
-export const getAllProducts = async () => {
-  return await ProductModel.find();
+export const getAllProducts = async ({
+  sortOrder = SORT_ORDER.ASC,
+  sortBy = '_id',
+}) => {
+  return await ProductModel.find().sort({ [sortBy]: sortOrder });
 };
 export const getProductById = async (productId) => {
   return await ProductModel.findById(productId);
@@ -17,7 +21,7 @@ export const updateProduct = async (productId, body) => {
   });
 };
 
-export const deleteProduct = async(productId) => {
-  const product = await ProductModel.findOneAndDelete({_id:productId});
+export const deleteProduct = async (productId) => {
+  const product = await ProductModel.findOneAndDelete({ _id: productId });
   return product;
 };
