@@ -14,8 +14,11 @@ import {
   patchProductSchema,
 } from '../validation/product.js';
 import { isValidId } from '../middlewares/isValidid.js';
+import { authenticate } from '../middlewares/authenticate.js';
 
 const router = Router();
+
+router.use(authenticate);
 
 router.get('/products', ctrlWrapper(getAllProductsControler));
 router.get(
