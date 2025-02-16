@@ -12,7 +12,11 @@ export const getAllProductsControler = async (req, res) => {
   console.log(req.query);
   const { sortOrder, sortBy } = parseSortParams(req.query);
 
-  const response = await getAllProducts({ sortOrder, sortBy });
+  const response = await getAllProducts({
+    sortOrder,
+    sortBy,
+    userId: req.user._id,
+  });
   res.json({
     status: 200,
     message: 'Successfully found products!',
@@ -22,7 +26,10 @@ export const getAllProductsControler = async (req, res) => {
 
 export const getProductByIdController = async (req, res, _next) => {
   const { productId } = req.params;
-  const response = await getProductById(productId);
+  const response = await getProductById({
+    _id: productId,
+    userId: req.user._id,
+  });
   if (!response) {
     throw createHttpError(404, 'Product not found');
   }
@@ -35,7 +42,7 @@ export const getProductByIdController = async (req, res, _next) => {
 };
 
 export const addProductController = async (req, res) => {
-  const product = await addProduct(req.body);
+  const product = await addProduct({ ...req.body, userId: req.user._id });
   res.status(201).json({
     status: 201,
     message: `Successfully created a product!`,
@@ -45,7 +52,10 @@ export const addProductController = async (req, res) => {
 
 export const updateProductController = async (req, res) => {
   const { productId } = req.params;
-  const product = await updateProduct(productId, req.body);
+  const product = await updateProduct(
+    { _id: productId, userId: req.user._id },
+    req.body,
+  );
 
   if (product === null) {
     throw createHttpError(404, 'Product not found');
@@ -60,7 +70,7 @@ export const updateProductController = async (req, res) => {
 
 export const deleteProductController = async (req, res) => {
   const { productId } = req.params;
-  const product = await deleteProduct(productId);
+  const product = await deleteProduct({ _id: productId, userId: req.user._id });
   if (!product) {
     throw createHttpError(404, 'Product not Found');
   }

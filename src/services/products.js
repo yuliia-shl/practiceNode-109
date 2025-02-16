@@ -4,24 +4,25 @@ import { ProductModel } from '../db/models/Product.js';
 export const getAllProducts = async ({
   sortOrder = SORT_ORDER.ASC,
   sortBy = '_id',
+  userId,
 }) => {
-  return await ProductModel.find().sort({ [sortBy]: sortOrder });
+  return await ProductModel.find({ userId }).sort({ [sortBy]: sortOrder });
 };
-export const getProductById = async (productId) => {
-  return await ProductModel.findById(productId);
+export const getProductById = async (filter) => {
+  return await ProductModel.findOne(filter);
 };
 
 export const addProduct = async (payload) => {
   return await ProductModel.create(payload);
 };
 
-export const updateProduct = async (productId, body) => {
-  return await ProductModel.findOneAndUpdate({ _id: productId }, body, {
+export const updateProduct = async (filter, body) => {
+  return await ProductModel.findOneAndUpdate(filter, body, {
     new: true,
   });
 };
 
-export const deleteProduct = async (productId) => {
-  const product = await ProductModel.findOneAndDelete({ _id: productId });
+export const deleteProduct = async (filter) => {
+  const product = await ProductModel.findOneAndDelete(filter);
   return product;
 };
