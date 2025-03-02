@@ -1,0 +1,21 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: Products App
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  description: >
+    Product's operations App
+tags:
+  - name: products
+    description: Product's operations
+servers:
+  - url: http://localhost:3000
+paths:
+  # тут будуть посилання на ендпоінти
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
