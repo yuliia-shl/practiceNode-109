@@ -23,9 +23,9 @@ const productSchema = new Schema(
       type: Schema.Types.ObjectId,
       required: true,
       ref: 'User',
-    }
+    },
   },
-  { timestamps: true },
+  { timestamps: true, versionKey: false },
 );
 
 export const ProductModel = model('product', productSchema);
