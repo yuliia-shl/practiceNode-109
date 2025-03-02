@@ -8,7 +8,7 @@ info:
   description: >
     Product's operations App
 tags:
-  - name: products
+  - name: Product
     description: Product's operations
 servers:
   - url: http://localhost:3000
@@ -16,6 +16,9 @@ paths:
   /products:
     get:
       $ref: '../swagger/paths/get.yaml'
+  /products/{productId}:
+    get:
+      $ref: '../swagger/paths/{productId}/get.yaml'
 components:
   securitySchemes:
     bearerAuth:
